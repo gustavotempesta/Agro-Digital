@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -12,6 +13,9 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
+
+import br.com.agrodigital.model.Propriedade;
+import br.com.agrodigital.model.Usuario;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -29,7 +33,7 @@ public class ViewPropriedade extends JFrame {
 	private JTextField textFieldMunicipio;
 	private JTextField textFieldInscEst;
 	private JTextField textFieldContato;
-
+	private String menuAtivo = "";
 	
 	/**
 	 * Create the frame.
@@ -72,7 +76,100 @@ public class ViewPropriedade extends JFrame {
 		btnConfirmar.setEnabled(false);
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id;
+				String idString;
+				String inscEst;
+				String nome;
+				String municipio;
+				String contato;
 
+				switch (menuAtivo) {
+				
+				case "Adicionar":
+					inscEst = textFieldInscEst.getText();
+					nome = textFieldNome.getText();
+					municipio = textFieldMunicipio.getText();
+					contato = textFieldContato.getText();
+					
+					Propriedade propriedadeAdicionar = new Propriedade(inscEst, nome, municipio, contato);
+
+					//Chamada do Controler
+					
+					JOptionPane.showMessageDialog(null, propriedadeAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					
+					dispose();
+					break;
+					
+				case "Listar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					// Chamada do Controller
+					
+					/*
+					 
+					*/
+					break;
+					
+				case "Atualizar":
+					idString = textFieldId.getText();
+					inscEst = textFieldInscEst.getText();
+					nome = textFieldNome.getText();
+					municipio = textFieldMunicipio.getText();
+					contato = textFieldContato.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					Propriedade propriedadeAtualizar = new Propriedade(inscEst, nome, municipio, contato);
+
+					// Chamada do Controller
+					
+					/*
+					 
+					 */
+					dispose();
+					break;
+					
+				case "Deletar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					//Chamada do Controller
+					
+					/*
+					
+					*/
+					dispose();
+					break;
+					
+				default:
+					break;
+				}
+				textFieldId.setText("");
+				textFieldInscEst.setText("");
+				textFieldNome.setText("");
+				textFieldMunicipio.setText("");
+				textFieldContato.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -81,21 +178,12 @@ public class ViewPropriedade extends JFrame {
 		btnConfirmar.setMaximumSize(new Dimension(75, 23));
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setEnabled(false);
 		btnCancelar.setIcon(null);
 		btnCancelar.setForeground(Color.RED);
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
-				dispose();
-			}
-			
-		});
 		
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setForeground(Color.BLUE);
-		btnAdicionar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAdicionar.setPreferredSize(new Dimension(75, 23));
 		btnAdicionar.setMinimumSize(new Dimension(75, 23));
 		btnAdicionar.setMaximumSize(new Dimension(75, 23));
@@ -121,6 +209,91 @@ public class ViewPropriedade extends JFrame {
 		btnDeletar.setMinimumSize(new Dimension(75, 23));
 		btnDeletar.setMaximumSize(new Dimension(75, 23));
 		btnDeletar.setHorizontalTextPosition(SwingConstants.RIGHT);
+		
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Adicionar");
+				textFieldId.setEnabled(false);
+				textFieldInscEst.setEnabled(true);
+				textFieldNome.setEnabled(true);
+				textFieldMunicipio.setEnabled(true);
+				textFieldContato.setEnabled(true);
+				btnListar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Listar");
+				textFieldId.setEnabled(true);
+				textFieldInscEst.setEnabled(false);
+				textFieldNome.setEnabled(false);
+				textFieldMunicipio.setEnabled(false);
+				textFieldContato.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Atualizar");
+				textFieldId.setEnabled(true);
+				textFieldInscEst.setEnabled(true);
+				textFieldNome.setEnabled(true);
+				textFieldMunicipio.setEnabled(true);
+				textFieldContato.setEnabled(true);
+				btnAdicionar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Deletar");
+				textFieldId.setEnabled(true);
+				textFieldInscEst.setEnabled(false);
+				textFieldNome.setEnabled(false);
+				textFieldMunicipio.setEnabled(false);
+				textFieldContato.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				textFieldId.setText("");
+				textFieldInscEst.setText("");
+				textFieldNome.setText("");
+				textFieldMunicipio.setText("");
+				textFieldContato.setText("");
+				textFieldId.setEnabled(false);
+				textFieldInscEst.setEnabled(false);
+				textFieldNome.setEnabled(false);
+				textFieldMunicipio.setEnabled(false);
+				textFieldContato.setEnabled(false);
+				btnAdicionar.setEnabled(true);
+				btnListar.setEnabled(true);
+				btnAtualizar.setEnabled(true);
+				btnDeletar.setEnabled(true);
+				btnConfirmar.setEnabled(false);
+				btnCancelar.setEnabled(false);
+			}
+		});
 			
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -203,5 +376,13 @@ public class ViewPropriedade extends JFrame {
 		gl_contentPane.linkSize(SwingConstants.VERTICAL, new Component[] {btnConfirmar, btnCancelar});
 		gl_contentPane.linkSize(SwingConstants.HORIZONTAL, new Component[] {textFieldMunicipio, lblNewLabel_2, textFieldInscEst});
 		contentPane.setLayout(gl_contentPane);
+	}
+
+	public String getMenuAtivo() {
+		return menuAtivo;
+	}
+
+	public void setMenuAtivo(String menuAtivo) {
+		this.menuAtivo = menuAtivo;
 	}
 }

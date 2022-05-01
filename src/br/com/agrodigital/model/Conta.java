@@ -5,13 +5,13 @@ public class Conta {
 	private String descricao;
 	private double saldo;
 	
-	public Conta(int id, String descricao, float saldo) {
+	public Conta(int id, String descricao, double saldo) {
 		this.id = id;
 		this.descricao = descricao;
 		this.saldo = saldo;
 	}
 	
-	public Conta(String descricao, float saldo) {
+	public Conta(String descricao, double saldo) {
 		this.descricao = descricao;
 		this.saldo = saldo;
 	}

@@ -2,12 +2,12 @@ package br.com.agrodigital.model;
 
 public class Propriedade {
 	private int id;
-	private int inscEst;
+	private String inscEst;
 	private String nome;
 	private String municipio;
 	private String contato;
 	
-	public Propriedade(int id, int inscEst, String nome, String municipio, String contato) {
+	public Propriedade(int id, String inscEst, String nome, String municipio, String contato) {
 		this.id = id;
 		this.inscEst = inscEst;
 		this.nome = nome;
@@ -15,18 +15,18 @@ public class Propriedade {
 		this.contato = contato;
 	}
 	
-	public Propriedade(int inscEst, String nome, String municipio, String contato) {
+	public Propriedade(String inscEst, String nome, String municipio, String contato) {
 		this.inscEst = inscEst;
 		this.nome = nome;
 		this.municipio = municipio;
 		this.contato = contato;
 	}
 
-	public int getInscEst() {
+	public String getInscEst() {
 		return inscEst;
 	}
 
-	public void setInscEst(int inscEst) {
+	public void setInscEst(String inscEst) {
 		this.inscEst = inscEst;
 	}
 

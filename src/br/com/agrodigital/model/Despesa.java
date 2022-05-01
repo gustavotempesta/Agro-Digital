@@ -4,13 +4,13 @@ public class Despesa extends Lancamento {
 	
 	private String natureza;
 
-	public Despesa(int id, String descricao, String data, int tipo, double valor, String natureza) {
+	public Despesa(int id, String descricao, String data, String tipo, double valor, String natureza) {
 		super();
 		this.setNatureza(natureza);
 		
 	}
 	
-	public Despesa(String descricao, String data, int tipo, double valor, String natureza) {
+	public Despesa(String descricao, String data, String tipo, double valor, String natureza) {
 		super();
 		this.setNatureza(natureza);
 	}

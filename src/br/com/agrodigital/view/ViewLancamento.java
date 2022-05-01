@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -12,6 +13,10 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
+
+import br.com.agrodigital.model.Despesa;
+import br.com.agrodigital.model.Propriedade;
+import br.com.agrodigital.model.Receita;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,7 +35,7 @@ public class ViewLancamento extends JFrame {
 	private JTextField textFieldTipo;
 	private JTextField textFieldValor;
 	private JTextField textFieldNatureza;
-
+	private String menuAtivo = "";
 	
 	/**
 	 * Create the frame.
@@ -78,7 +83,140 @@ public class ViewLancamento extends JFrame {
 		btnConfirmar.setEnabled(false);
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	
+				int id;
+				String idString;
+				String descricao;
+				String data;
+				String tipo;
+				String natureza;
+				double valor;
+				String valorString;
+
+				switch (menuAtivo) {
+				
+				case "Adicionar":
+					descricao = textFieldDescricao.getText();
+					data = textFieldData.getText();
+					tipo = textFieldTipo.getText();
+					valorString = textFieldValor.getText();
+					
+					valor = 0;
+					try {
+						valor = Double.parseDouble(valorString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Valor Inválido");
+						return;
+					}
+					
+					if (tipo == "Despesa") {
+						natureza = textFieldNatureza.getText();
+						Despesa despesaAdicionar = new Despesa(descricao, data, tipo, valor, natureza);
+						
+						//Chamada do Controler
+						
+						JOptionPane.showMessageDialog(null, despesaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					}else if (tipo == "Receita") {
+						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor);
+						
+						//Chamada do Controler
+						
+						JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					}
+										
+					dispose();
+					break;
+					
+				case "Listar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					// Chamada do Controller
+					
+					/*
+					 
+					*/
+					break;
+					
+				case "Atualizar":
+					idString = textFieldId.getText();
+					descricao = textFieldDescricao.getText();
+					data = textFieldData.getText();
+					tipo = textFieldTipo.getText();
+					natureza = textFieldNatureza.getText();
+					valorString = textFieldValor.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					valor = 0;
+					try {
+						valor = Double.parseDouble(valorString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Valor Inválido");
+						return;
+					}
+					
+					if (tipo == "Despesa") {
+						natureza = textFieldNatureza.getText();
+						Despesa despesaAdicionar = new Despesa(descricao, data, tipo, valor, natureza);
+						
+						//Chamada do Controler
+						
+						/*
+						 * 
+						 */
+						
+					}else if (tipo == "Receita") {
+						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor);
+						
+						//Chamada do Controler
+						
+						/*
+						 * 
+						 */
+					}
+					dispose();
+					break;
+					
+				case "Deletar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					//Chamada do Controller
+					
+					/*
+					
+					*/
+					dispose();
+					break;
+					
+				default:
+					break;
+				}
+				textFieldId.setText("");
+				textFieldDescricao.setText("");
+				textFieldData.setText("");
+				textFieldTipo.setText("");
+				textFieldNatureza.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -87,21 +225,12 @@ public class ViewLancamento extends JFrame {
 		btnConfirmar.setMaximumSize(new Dimension(75, 23));
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setEnabled(false);
 		btnCancelar.setIcon(null);
 		btnCancelar.setForeground(Color.RED);
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
-				dispose();
-			}
-			
-		});
 		
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setForeground(Color.BLUE);
-		btnAdicionar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAdicionar.setPreferredSize(new Dimension(75, 23));
 		btnAdicionar.setMinimumSize(new Dimension(75, 23));
 		btnAdicionar.setMaximumSize(new Dimension(75, 23));
@@ -127,6 +256,96 @@ public class ViewLancamento extends JFrame {
 		btnDeletar.setMinimumSize(new Dimension(75, 23));
 		btnDeletar.setMaximumSize(new Dimension(75, 23));
 		btnDeletar.setHorizontalTextPosition(SwingConstants.RIGHT);
+		
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Adicionar");
+				textFieldId.setEnabled(false);
+				textFieldDescricao.setEnabled(true);
+				textFieldData.setEnabled(true);
+				textFieldTipo.setEnabled(true);
+				textFieldValor.setEnabled(true);
+				textFieldNatureza.setEnabled(true);
+				btnListar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Listar");
+				textFieldId.setEnabled(true);
+				textFieldDescricao.setEnabled(false);
+				textFieldData.setEnabled(false);
+				textFieldTipo.setEnabled(false);
+				textFieldValor.setEnabled(false);
+				textFieldNatureza.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Atualizar");
+				textFieldId.setEnabled(true);
+				textFieldDescricao.setEnabled(true);
+				textFieldData.setEnabled(true);
+				textFieldTipo.setEnabled(true);
+				textFieldValor.setEnabled(true);
+				textFieldNatureza.setEnabled(true);
+				btnAdicionar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Deletar");
+				textFieldId.setEnabled(true);
+				textFieldDescricao.setEnabled(false);
+				textFieldData.setEnabled(false);
+				textFieldTipo.setEnabled(false);
+				textFieldValor.setEnabled(false);
+				textFieldNatureza.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				textFieldId.setText("");
+				textFieldDescricao.setText("");
+				textFieldData.setText("");
+				textFieldTipo.setText("");
+				textFieldNatureza.setText("");
+				textFieldId.setEnabled(false);
+				textFieldDescricao.setEnabled(false);
+				textFieldData.setEnabled(false);
+				textFieldTipo.setEnabled(false);
+				textFieldValor.setEnabled(false);
+				textFieldNatureza.setEnabled(false);
+				btnAdicionar.setEnabled(true);
+				btnListar.setEnabled(true);
+				btnAtualizar.setEnabled(true);
+				btnDeletar.setEnabled(true);
+				btnConfirmar.setEnabled(false);
+				btnCancelar.setEnabled(false);
+			}
+		});
 			
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -210,5 +429,13 @@ public class ViewLancamento extends JFrame {
 		gl_contentPane.linkSize(SwingConstants.VERTICAL, new Component[] {btnConfirmar, btnCancelar});
 		gl_contentPane.linkSize(SwingConstants.HORIZONTAL, new Component[] {textFieldData, lblNewLabel_2, textFieldTipo});
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public String getMenuAtivo() {
+		return menuAtivo;
+	}
+
+	public void setMenuAtivo(String menuAtivo) {
+		this.menuAtivo = menuAtivo;
 	}
 }

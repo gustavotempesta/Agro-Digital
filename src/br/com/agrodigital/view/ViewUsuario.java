@@ -6,6 +6,7 @@ import javax.swing.JPasswordField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -13,6 +14,9 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
+
+import br.com.agrodigital.model.Conta;
+import br.com.agrodigital.model.Usuario;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -28,6 +32,8 @@ public class ViewUsuario extends JFrame {
 	private JTextField textFieldId;
 	private JTextField textFieldSenha;
 	private JTextField textFieldLogin;
+	private String menuAtivo = "";
+	
 
 	
 	/**
@@ -35,7 +41,7 @@ public class ViewUsuario extends JFrame {
 	 */
 	public ViewUsuario() {
 		setResizable(false);
-		setTitle("Cadastrar Propriedade");
+		setTitle("Cadastrar Usuário");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 525, 370);
 		contentPane = new JPanel();
@@ -49,6 +55,7 @@ public class ViewUsuario extends JFrame {
 		
 		JLabel lblNewLabel_1 = new JLabel("Senha");
 		textFieldSenha = new JPasswordField();
+		textFieldSenha.setEnabled(false);
 		textFieldSenha.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Login");
@@ -60,7 +67,92 @@ public class ViewUsuario extends JFrame {
 		btnConfirmar.setEnabled(false);
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id;
+				String idString;
+				String login;
+				String senha;
+				
+				switch (menuAtivo) {
+				
+				case "Adicionar":
+					login = textFieldLogin.getText();
+					senha = textFieldSenha.getText();
+					
+					Usuario usuarioAdicionar = new Usuario(login, senha);
 
+					//Chamada do Controler
+					
+					JOptionPane.showMessageDialog(null, usuarioAdicionar.toString() + "\nincluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					
+					dispose();
+					break;
+					
+				case "Listar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					// Chamada do Controller
+					
+					/*	
+					 
+					*/
+					break;
+					
+				case "Atualizar":
+					idString = textFieldId.getText();
+					login = textFieldLogin.getText();
+					senha = textFieldSenha.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					Usuario usuarioAtualizar = new Usuario(login, senha);
+
+					// Chamada do Controller
+					
+					/*
+
+					 */
+					dispose();
+					break;
+					
+				case "Deletar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					//Chamada do Controller
+					
+					/*
+					
+					*/
+					dispose();
+					break;
+					
+				default:
+					break;
+				}
+				textFieldId.setText("");
+				textFieldLogin.setText("");
+				textFieldSenha.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -69,21 +161,12 @@ public class ViewUsuario extends JFrame {
 		btnConfirmar.setMaximumSize(new Dimension(75, 23));
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setEnabled(false);
 		btnCancelar.setIcon(null);
 		btnCancelar.setForeground(Color.RED);
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
-				dispose();
-			}
-			
-		});
 		
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setForeground(Color.BLUE);
-		btnAdicionar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAdicionar.setPreferredSize(new Dimension(75, 23));
 		btnAdicionar.setMinimumSize(new Dimension(75, 23));
 		btnAdicionar.setMaximumSize(new Dimension(75, 23));
@@ -109,6 +192,80 @@ public class ViewUsuario extends JFrame {
 		btnDeletar.setMinimumSize(new Dimension(75, 23));
 		btnDeletar.setMaximumSize(new Dimension(75, 23));
 		btnDeletar.setHorizontalTextPosition(SwingConstants.RIGHT);
+		
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Adicionar");
+				textFieldId.setEnabled(false);
+				textFieldLogin.setEnabled(true);
+				textFieldSenha.setEnabled(true);
+				btnListar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Listar");
+				textFieldId.setEnabled(true);
+				textFieldLogin.setEnabled(false);
+				textFieldSenha.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Atualizar");
+				textFieldId.setEnabled(true);
+				textFieldLogin.setEnabled(true);
+				textFieldSenha.setEnabled(true);
+				btnAdicionar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Deletar");
+				textFieldId.setEnabled(true);
+				textFieldLogin.setEnabled(false);
+				textFieldSenha.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				textFieldId.setText("");
+				textFieldLogin.setText("");
+				textFieldSenha.setText("");
+				textFieldId.setEnabled(false);
+				textFieldLogin.setEnabled(false);
+				textFieldSenha.setEnabled(false);
+				btnAdicionar.setEnabled(true);
+				btnListar.setEnabled(true);
+				btnAtualizar.setEnabled(true);
+				btnDeletar.setEnabled(true);
+				btnConfirmar.setEnabled(false);
+				btnCancelar.setEnabled(false);
+			}
+		});
+		
 			
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -171,5 +328,13 @@ public class ViewUsuario extends JFrame {
 		);
 		gl_contentPane.linkSize(SwingConstants.VERTICAL, new Component[] {btnConfirmar, btnCancelar});
 		contentPane.setLayout(gl_contentPane);
+	}
+
+	public String getMenuAtivo() {
+		return menuAtivo;
+	}
+
+	public void setMenuAtivo(String menuAtivo) {
+		this.menuAtivo = menuAtivo;
 	}
 }

@@ -44,7 +44,7 @@ public class ViewMainGUI {
 	private void initialize() {
 		frmAgroDigital = new JFrame();
 		frmAgroDigital.setExtendedState(Frame.MAXIMIZED_BOTH);
-		frmAgroDigital.setTitle("Sistema de Pagamentos");
+		frmAgroDigital.setTitle("Agro Digital");
 		frmAgroDigital.setBounds(100, 100, 958, 504);
 		frmAgroDigital.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAgroDigital.getContentPane().setLayout(new BorderLayout(0, 0));

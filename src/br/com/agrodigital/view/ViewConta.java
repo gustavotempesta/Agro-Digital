@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -12,6 +13,8 @@ import java.awt.Dimension;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
+
+import br.com.agrodigital.model.Conta;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -27,14 +30,14 @@ public class ViewConta extends JFrame {
 	private JTextField textFieldId;
 	private JTextField textFieldSaldo;
 	private JTextField textFieldDescricao;
-
+	private String menuAtivo = "";
 	
 	/**
 	 * Create the frame.
 	 */
 	public ViewConta() {
 		setResizable(false);
-		setTitle("Cadastrar Propriedade");
+		setTitle("Cadastrar Conta");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 525, 370);
 		contentPane = new JPanel();
@@ -60,7 +63,119 @@ public class ViewConta extends JFrame {
 		btnConfirmar.setEnabled(false);
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id;
+				String idString;
+				double saldo;
+				String saldoString;
+				String descricao;
+				
+				switch (menuAtivo) {
+				
+				case "Adicionar":
+					saldoString = textFieldSaldo.getText();
+					descricao = textFieldDescricao.getText();
+					
+					saldo = 0;
+					try {
+						saldo = Double.parseDouble(saldoString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Saldo Inválido");
+						return;
+					}
+					
+					Conta contaAdicionar = new Conta(descricao, saldo);
 
+					//Chamada do Controler
+					
+					JOptionPane.showMessageDialog(null, contaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					
+					dispose();
+					break;
+					
+				case "Listar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					// Chamada do Controller
+					
+					/*
+						textFieldSaldo.setText(contaListar.getSaldo);
+						textFieldDescricao.setText(contaListar.getDescricao);		
+					 
+					*/
+					break;
+					
+				case "Atualizar":
+					idString = textFieldId.getText();
+					saldoString = textFieldSaldo.getText();
+					descricao = textFieldDescricao.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					
+					saldo = 0;
+					try {
+						saldo = Double.parseDouble(saldoString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Saldo Inválido");
+						return;
+					}
+					
+					Conta contaAtualizar = new Conta(descricao, saldo);
+
+					// Chamada do Controller
+					
+					/*
+					if(resposta == true) {
+					   JOptionPane.showMessageDialog(null, contaAtualizar.toString() + "\nalterada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, contaAtualizar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					 */
+					dispose();
+					break;
+					
+				case "Deletar":
+					idString = textFieldId.getText();
+					
+					id = 0;
+					try {
+						id = Integer.parseInt(idString);
+					} catch(NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "ID Inválido");
+						return;
+					}
+					
+					//Chamada do Controller
+					
+					/*
+					if (resposta == true) {
+						JOptionPane.showMessageDialog(null, conta.toString() + "\npagada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, conta.toString() + "\nOcorreu um erro ao apagar a conta !", "Erro", JOptionPane.ERROR_MESSAGE);
+					*/
+					dispose();
+					break;
+					
+				default:
+					break;
+				}
+				textFieldId.setText("");
+				textFieldSaldo.setText("");
+				textFieldDescricao.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -69,21 +184,12 @@ public class ViewConta extends JFrame {
 		btnConfirmar.setMaximumSize(new Dimension(75, 23));
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setEnabled(false);
 		btnCancelar.setIcon(null);
 		btnCancelar.setForeground(Color.RED);
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
-				dispose();
-			}
-			
-		});
 		
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setForeground(Color.BLUE);
-		btnAdicionar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAdicionar.setPreferredSize(new Dimension(75, 23));
 		btnAdicionar.setMinimumSize(new Dimension(75, 23));
 		btnAdicionar.setMaximumSize(new Dimension(75, 23));
@@ -109,6 +215,79 @@ public class ViewConta extends JFrame {
 		btnDeletar.setMinimumSize(new Dimension(75, 23));
 		btnDeletar.setMaximumSize(new Dimension(75, 23));
 		btnDeletar.setHorizontalTextPosition(SwingConstants.RIGHT);
+		
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Adicionar");
+				textFieldId.setEnabled(false);
+				textFieldSaldo.setEnabled(true);
+				textFieldDescricao.setEnabled(true);
+				btnListar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Listar");
+				textFieldId.setEnabled(true);
+				textFieldSaldo.setEnabled(false);
+				textFieldDescricao.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Atualizar");
+				textFieldId.setEnabled(true);
+				textFieldSaldo.setEnabled(true);
+				textFieldDescricao.setEnabled(true);
+				btnAdicionar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnDeletar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMenuAtivo("Deletar");
+				textFieldId.setEnabled(true);
+				textFieldSaldo.setEnabled(false);
+				textFieldDescricao.setEnabled(false);
+				btnAdicionar.setEnabled(false);
+				btnAtualizar.setEnabled(false);
+				btnListar.setEnabled(false);
+				btnConfirmar.setEnabled(true);
+				btnCancelar.setEnabled(true);
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				textFieldId.setText("");
+				textFieldSaldo.setText("");
+				textFieldDescricao.setText("");
+				textFieldId.setEnabled(false);
+				textFieldSaldo.setEnabled(false);
+				textFieldDescricao.setEnabled(false);
+				btnAdicionar.setEnabled(true);
+				btnListar.setEnabled(true);
+				btnAtualizar.setEnabled(true);
+				btnDeletar.setEnabled(true);
+				btnConfirmar.setEnabled(false);
+				btnCancelar.setEnabled(false);
+			}
+		});
 			
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -171,5 +350,13 @@ public class ViewConta extends JFrame {
 		);
 		gl_contentPane.linkSize(SwingConstants.VERTICAL, new Component[] {btnConfirmar, btnCancelar});
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public String getMenuAtivo() {
+		return menuAtivo;
+	}
+
+	public void setMenuAtivo(String menuAtivo) {
+		this.menuAtivo = menuAtivo;
 	}
 }
