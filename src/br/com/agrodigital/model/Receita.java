@@ -18,7 +18,7 @@ public class Receita extends Lancamento {
 
 	@Override
 	public String toString() {
-		return "Receita [id=" + id + ", descricao=" + descricao + ", data=" + data + ", tipo=" + tipo + ", valor="
+		return "Receita [descricao=" + descricao + ", data=" + data + ", tipo=" + tipo + ", valor="
 				+ valor + ", natureza=" + natureza + "]";
 	}
 	

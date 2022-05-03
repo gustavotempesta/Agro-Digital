@@ -51,6 +51,7 @@ public class ViewRelatorio extends JFrame {
 		contentPane.add(panelSul, BorderLayout.SOUTH);
 		
 		JButton btnExibirCustoTotal = new JButton("Relat\u00F3rio de Custo Total");
+		btnExibirCustoTotal.setEnabled(false);
 		btnExibirCustoTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {		
 //				
@@ -58,6 +59,7 @@ public class ViewRelatorio extends JFrame {
 		});
 		
 		JButton btnExibirFluxoDeCaixa = new JButton("Relat\u00F3rio de Fluxo de Caixa");
+		btnExibirFluxoDeCaixa.setEnabled(false);
 		btnExibirFluxoDeCaixa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 

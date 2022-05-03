@@ -18,7 +18,7 @@ public class Despesa extends Lancamento {
 
 	@Override
 	public String toString() {
-		return "Despesa [id=" + id + ", descricao=" + descricao + ", data=" + data
+		return "Despesa [descricao=" + descricao + ", data=" + data
 				+ ", tipo=" + tipo + ", valor=" + valor + ", natureza=" + natureza + "]";
 	}
 
