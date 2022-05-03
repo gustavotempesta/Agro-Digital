@@ -6,20 +6,24 @@ public abstract class Lancamento {
 	protected String data;
 	protected String tipo;
 	protected double valor;
+	protected String natureza;
+	protected int idConta = 1;
 		
-	public Lancamento(int id, String descricao, String data, String tipo, double valor) {
+	public Lancamento(int id, String descricao, String data, String tipo, double valor, String natureza) {
 		this.id = id;
 		this.descricao = descricao;
 		this.data = data;
 		this.tipo = tipo;
 		this.valor = valor;
+		this.natureza = natureza;
 	}
 	
-	public Lancamento(String descricao, String data, String tipo, double valor) {
+	public Lancamento(String descricao, String data, String tipo, double valor, String natureza) {
 		this.descricao = descricao;
 		this.data = data;
 		this.tipo = tipo;
 		this.valor = valor;
+		this.natureza = natureza;
 	}
 
 	public String getDescricao() {
@@ -54,8 +58,20 @@ public abstract class Lancamento {
 		this.valor = valor;
 	}
 
+	public int getIdConta() {
+		return idConta;
+	}
+
 	public int getId() {
 		return id;
+	}
+	
+	public String getNatureza() {
+		return natureza;
+	}
+
+	public void setNatureza(String natureza) {
+		this.natureza = natureza;
 	}
 	
 }

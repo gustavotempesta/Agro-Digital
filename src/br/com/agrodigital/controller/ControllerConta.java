@@ -1,5 +1,6 @@
 package br.com.agrodigital.controller;
 
+import br.com.agrodigital.dao.DaoConta;
 import br.com.agrodigital.model.Conta;
 
 public class ControllerConta {
@@ -16,32 +17,27 @@ public class ControllerConta {
 	}
 	
 	public boolean adicionar(Conta a) {
-		// ContaDao dao = new ContaDao(a);
-		// boolean resposta = dao.insert(a);
-		// return resposta;
-		return true;
+		DaoConta dao = new DaoConta();
+		boolean resposta = dao.insert(a);
+		return resposta;
 	}
 	
 	public Conta listar(int id) {
-		// ContaDao dao = new ContaDao(a);
-		// boolean resposta = dao.select(id);
-		// return resposta;
-		Conta c = new Conta("teste", 0);
-		return c;
+		DaoConta dao = new DaoConta();
+		Conta resposta = dao.select(id);
+		return resposta;
 	}
 	
 	public boolean atualizar(Conta a) {
-		// ContaDao dao = new ContaDao(a);
-		// boolean resposta = dao.update(a);
-		// return resposta;
-		return true;
+		DaoConta dao = new DaoConta();
+		boolean resposta = dao.update(a);
+		return resposta;
 		}
 	
 	public boolean deletar(int id) {
-		// ContaDao dao = new ContaDao(a);
-		// boolean resposta = dao.delete(id);
-		// return resposta;
-		return true;
+		DaoConta dao = new DaoConta();
+		boolean resposta = dao.delete(id);
+		return resposta;
 	}		
 
 }

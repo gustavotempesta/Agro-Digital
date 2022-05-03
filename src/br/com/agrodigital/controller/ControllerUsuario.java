@@ -1,5 +1,6 @@
 package br.com.agrodigital.controller;
 
+import br.com.agrodigital.dao.DaoUsuario;
 import br.com.agrodigital.model.Usuario;
 
 public class ControllerUsuario {
@@ -16,33 +17,27 @@ public class ControllerUsuario {
 	}
 	
 	public boolean adicionar(Usuario a) {
-		// UsuarioDao dao = new UsuarioDao(a);
-		// boolean resposta = dao.insert(a);
-		// return resposta;
-		return true;
+		DaoUsuario dao = new DaoUsuario();
+		boolean resposta = dao.insert(a);
+		return resposta;
 	}
 	
 	public Usuario listar(int id) {
-		// UsuarioDao dao = new UsuarioDao(a);
-		// boolean resposta = dao.select(id);
-		// return resposta;
-		Usuario c = new Usuario("teste", "senha");
-		return c;
+		DaoUsuario dao = new DaoUsuario();
+		Usuario resposta = dao.select(id);
+		return resposta;
 	}
 	
 	public boolean atualizar(Usuario a) {
-		// UsuarioDao dao = new UsuarioDao(a);
-		// boolean resposta = dao.update(a);
-		// return resposta;
-		return true;
+		DaoUsuario dao = new DaoUsuario();
+		boolean resposta = dao.update(a);
+		return resposta;
 		}
 	
 	public boolean deletar(int id) {
-		// UsuarioDao dao = new UsuarioDao(a);
-		// boolean resposta = dao.delete(id);
-		// return resposta;
-		return true;
-	}		
-
+		DaoUsuario dao = new DaoUsuario();
+		boolean resposta = dao.delete(id);
+		return resposta;
+		}		
 }
 

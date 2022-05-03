@@ -123,10 +123,15 @@ public class ViewPropriedade extends JFrame {
 					
 					Propriedade propriedadeListar = ControllerPropriedade.getInstance().listar(id);
 					
-					textFieldInscEst.setText(String.valueOf(propriedadeListar.getInscEst()));
-					textFieldNome.setText(propriedadeListar.getNome());
-					textFieldMunicipio.setText(String.valueOf(propriedadeListar.getMunicipio()));
-					textFieldContato.setText(propriedadeListar.getContato());
+					if (propriedadeListar != null) {
+						textFieldInscEst.setText(String.valueOf(propriedadeListar.getInscEst()));
+						textFieldNome.setText(propriedadeListar.getNome());
+						textFieldMunicipio.setText(String.valueOf(propriedadeListar.getMunicipio()));
+						textFieldContato.setText(propriedadeListar.getContato());
+					}else {
+						JOptionPane.showMessageDialog(null, "Propriedade: " + id + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+
 
 					break;
 					
@@ -145,7 +150,7 @@ public class ViewPropriedade extends JFrame {
 						return;
 					}
 					
-					Propriedade propriedadeAtualizar = new Propriedade(inscEst, nome, municipio, contato);
+					Propriedade propriedadeAtualizar = new Propriedade(id, inscEst, nome, municipio, contato);
 
 					boolean respostaAtualizar = ControllerPropriedade.getInstance().atualizar(propriedadeAtualizar); 
 

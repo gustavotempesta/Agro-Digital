@@ -113,10 +113,13 @@ public class ViewConta extends JFrame {
 					}
 					
 					Conta contaListar = ControllerConta.getInstance().listar(id);
-										
-					textFieldSaldo.setText(String.valueOf(contaListar.getSaldo()));
-					textFieldDescricao.setText(contaListar.getDescricao());
-			
+					
+					if (contaListar != null) {
+						textFieldSaldo.setText(String.valueOf(contaListar.getSaldo()));
+						textFieldDescricao.setText(contaListar.getDescricao());;	
+					}else {
+						JOptionPane.showMessageDialog(null, "Conta: " + id + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 					
 					break;
 					
@@ -141,7 +144,7 @@ public class ViewConta extends JFrame {
 						return;
 					}
 					
-					Conta contaAtualizar = new Conta(descricao, saldo);
+					Conta contaAtualizar = new Conta(id, descricao, saldo);
 
 					boolean respostaAtualizar = ControllerConta.getInstance().atualizar(contaAtualizar); 
 					
@@ -199,6 +202,7 @@ public class ViewConta extends JFrame {
 		btnCancelar.setForeground(Color.RED);
 		
 		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.setEnabled(false);
 		btnAdicionar.setForeground(Color.BLUE);
 		btnAdicionar.setPreferredSize(new Dimension(75, 23));
 		btnAdicionar.setMinimumSize(new Dimension(75, 23));
@@ -220,6 +224,7 @@ public class ViewConta extends JFrame {
 		btnAtualizar.setHorizontalTextPosition(SwingConstants.RIGHT);
 		
 		JButton btnDeletar = new JButton("Deletar");
+		btnDeletar.setEnabled(false);
 		btnDeletar.setForeground(Color.RED);
 		btnDeletar.setPreferredSize(new Dimension(75, 23));
 		btnDeletar.setMinimumSize(new Dimension(75, 23));
@@ -290,10 +295,10 @@ public class ViewConta extends JFrame {
 				textFieldId.setEnabled(false);
 				textFieldSaldo.setEnabled(false);
 				textFieldDescricao.setEnabled(false);
-				btnAdicionar.setEnabled(true);
+				//btnAdicionar.setEnabled(true);
 				btnListar.setEnabled(true);
 				btnAtualizar.setEnabled(true);
-				btnDeletar.setEnabled(true);
+				//btnDeletar.setEnabled(true);
 				btnConfirmar.setEnabled(false);
 				btnCancelar.setEnabled(false);
 			}

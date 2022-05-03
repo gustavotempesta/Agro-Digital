@@ -2,24 +2,12 @@ package br.com.agrodigital.model;
 
 public class Despesa extends Lancamento {
 	
-	private String natureza;
-
 	public Despesa(int id, String descricao, String data, String tipo, double valor, String natureza) {
-		super(id, descricao, data, tipo, valor);
-		this.setNatureza(natureza);
+		super(id, descricao, data, tipo, valor, natureza);
 	}
 	
 	public Despesa(String descricao, String data, String tipo, double valor, String natureza) {
-		super(descricao, data, tipo, valor);
-		this.setNatureza(natureza);
-	}
-
-	public String getNatureza() {
-		return natureza;
-	}
-
-	public void setNatureza(String natureza) {
-		this.natureza = natureza;
+		super(descricao, data, tipo, valor, natureza);
 	}
 	
 	public void debita(double valor, Conta conta) {
@@ -30,8 +18,8 @@ public class Despesa extends Lancamento {
 
 	@Override
 	public String toString() {
-		return "Despesa [natureza=" + natureza + ", id=" + id + ", descricao=" + descricao + ", data=" + data
-				+ ", tipo=" + tipo + ", valor=" + valor + "]";
+		return "Despesa [id=" + id + ", descricao=" + descricao + ", data=" + data
+				+ ", tipo=" + tipo + ", valor=" + valor + ", natureza=" + natureza + "]";
 	}
 
 }

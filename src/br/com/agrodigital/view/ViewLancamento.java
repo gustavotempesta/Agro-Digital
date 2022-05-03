@@ -100,6 +100,7 @@ public class ViewLancamento extends JFrame {
 					data = textFieldData.getText();
 					tipo = textFieldTipo.getText();
 					valorString = textFieldValor.getText();
+					natureza = textFieldNatureza.getText();
 					
 					valor = 0;
 					try {
@@ -110,7 +111,6 @@ public class ViewLancamento extends JFrame {
 					}
 					
 					if (tipo.equals("Despesa")) {
-						natureza = textFieldNatureza.getText();
 						Despesa despesaAdicionar = new Despesa(descricao, data, tipo, valor, natureza);
 						boolean respostaAdicionar = ControllerLancamento.getInstance().adicionar(despesaAdicionar);
 						
@@ -121,7 +121,7 @@ public class ViewLancamento extends JFrame {
 							}
 						
 					}else if (tipo.equals("Receita")) {
-						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor);
+						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor, natureza);
 						boolean respostaAdicionar = ControllerLancamento.getInstance().adicionar(receitaAdicionar);
 						
 						if(respostaAdicionar == true) {
@@ -129,6 +129,9 @@ public class ViewLancamento extends JFrame {
 							} else {
 								JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
 							}
+					}else {
+						JOptionPane.showMessageDialog(null, "\nOcorreu um erro ! \nTipo " + tipo + " inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+						break;
 					}
 					
 					textFieldId.setText("");
@@ -143,7 +146,6 @@ public class ViewLancamento extends JFrame {
 					
 				case "Listar":
 					idString = textFieldId.getText();
-					tipo = textFieldTipo.getText();
 					
 					id = 0;
 					try {
@@ -153,22 +155,27 @@ public class ViewLancamento extends JFrame {
 						return;
 					}
 					
-					Lancamento lancamentoListar = ControllerLancamento.getInstance().listar(id, tipo);
+					Lancamento lancamentoListar = ControllerLancamento.getInstance().listar(id);
 					
-					if(lancamentoListar instanceof Receita) {
-						Receita receitaListar = (Receita) lancamentoListar;
-						textFieldDescricao.setText(receitaListar.getDescricao());
-						textFieldData.setText(receitaListar.getData());
-						textFieldValor.setText(String.valueOf(receitaListar.getValor()));
-						textFieldTipo.setText(receitaListar.getTipo());
-
-					} else if(lancamentoListar instanceof Despesa) {
-						Despesa despesaListar = (Despesa) lancamentoListar;
-						textFieldDescricao.setText(despesaListar.getDescricao());
-						textFieldData.setText(despesaListar.getData());
-						textFieldValor.setText(String.valueOf(despesaListar.getValor()));
-						textFieldTipo.setText(despesaListar.getTipo());
-						textFieldNatureza.setText(despesaListar.getNatureza());
+					if (lancamentoListar != null) {
+						if(lancamentoListar instanceof Receita) {
+							Receita receitaListar = (Receita) lancamentoListar;
+							textFieldDescricao.setText(receitaListar.getDescricao());
+							textFieldData.setText(receitaListar.getData());
+							textFieldValor.setText(String.valueOf(receitaListar.getValor()));
+							textFieldTipo.setText(receitaListar.getTipo());
+							textFieldNatureza.setText(receitaListar.getNatureza());
+	
+						} else if(lancamentoListar instanceof Despesa) {
+							Despesa despesaListar = (Despesa) lancamentoListar;
+							textFieldDescricao.setText(despesaListar.getDescricao());
+							textFieldData.setText(despesaListar.getData());
+							textFieldValor.setText(String.valueOf(despesaListar.getValor()));
+							textFieldTipo.setText(despesaListar.getTipo());
+							textFieldNatureza.setText(despesaListar.getNatureza());
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "Lançamento: " + id + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					
 					break;
@@ -200,7 +207,7 @@ public class ViewLancamento extends JFrame {
 					if (tipo.equals("Despesa")) {
 						System.out.println("chegou despesa");
 						natureza = textFieldNatureza.getText();
-						Despesa despesaAdicionar = new Despesa(descricao, data, tipo, valor, natureza);
+						Despesa despesaAdicionar = new Despesa(id, descricao, data, tipo, valor, natureza);
 						
 						boolean respostaAtualizar = ControllerLancamento.getInstance().atualizar(despesaAdicionar); 
 						
@@ -212,7 +219,7 @@ public class ViewLancamento extends JFrame {
 						
 					}else if (tipo.equals("Receita")) {
 						System.out.println("chegou receita");
-						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor);
+						Receita receitaAdicionar = new Receita(id, descricao, data, tipo, valor, natureza);
 						
 						boolean respostaAtualizar = ControllerLancamento.getInstance().atualizar(receitaAdicionar); 
 
@@ -235,7 +242,6 @@ public class ViewLancamento extends JFrame {
 					
 				case "Deletar":
 					idString = textFieldId.getText();
-					tipo = textFieldTipo.getText();
 					
 					id = 0;
 					try {
@@ -245,7 +251,7 @@ public class ViewLancamento extends JFrame {
 						return;
 					}
 					
-					boolean respostaDeletar = ControllerLancamento.getInstance().deletar(id, tipo);
+					boolean respostaDeletar = ControllerLancamento.getInstance().deletar(id);
 					
 					if (respostaDeletar == true) {
 						JOptionPane.showMessageDialog(null, "Lançamento " + id + "\napagado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -328,7 +334,7 @@ public class ViewLancamento extends JFrame {
 				textFieldId.setEnabled(true);
 				textFieldDescricao.setEnabled(false);
 				textFieldData.setEnabled(false);
-				textFieldTipo.setEnabled(true);
+				textFieldTipo.setEnabled(false);
 				textFieldValor.setEnabled(false);
 				textFieldNatureza.setEnabled(false);
 				btnAdicionar.setEnabled(false);
@@ -362,7 +368,7 @@ public class ViewLancamento extends JFrame {
 				textFieldId.setEnabled(true);
 				textFieldDescricao.setEnabled(false);
 				textFieldData.setEnabled(false);
-				textFieldTipo.setEnabled(true);
+				textFieldTipo.setEnabled(false);
 				textFieldValor.setEnabled(false);
 				textFieldNatureza.setEnabled(false);
 				btnAdicionar.setEnabled(false);

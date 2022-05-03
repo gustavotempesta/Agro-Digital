@@ -73,6 +73,7 @@ public class ViewMainGUI {
 		menuBar.add(menuCadastro);
 
 		JMenuItem menuItemPropriedade = new JMenuItem("Propriedade");
+		menuItemPropriedade.setEnabled(false);
 		menuCadastro.add(menuItemPropriedade);
 		menuItemPropriedade.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -104,6 +105,7 @@ public class ViewMainGUI {
 		});
 			
 		JMenuItem menuItemUsuario = new JMenuItem("Usuario");
+		menuItemUsuario.setEnabled(false);
 		menuCadastro.add(menuItemUsuario);
 		menuItemUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

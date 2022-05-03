@@ -108,8 +108,12 @@ public class ViewUsuario extends JFrame {
 					
 					Usuario usuarioListar = ControllerUsuario.getInstance().listar(id);
 					
-					textFieldLogin.setText(String.valueOf(usuarioListar.getLogin()));
-					textFieldSenha.setText(usuarioListar.getSenha());
+					if (usuarioListar != null) {
+						textFieldLogin.setText(String.valueOf(usuarioListar.getLogin()));
+						textFieldSenha.setText(usuarioListar.getSenha());
+					}else {
+						JOptionPane.showMessageDialog(null, "Usuario: " + id + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 
 					break;
 					
@@ -126,7 +130,7 @@ public class ViewUsuario extends JFrame {
 						return;
 					}
 					
-					Usuario usuarioAtualizar = new Usuario(login, senha);
+					Usuario usuarioAtualizar = new Usuario(id, login, senha);
 
 					boolean respostaAtualizar = ControllerUsuario.getInstance().atualizar(usuarioAtualizar); 
 					

@@ -1,5 +1,7 @@
 package br.com.agrodigital.controller;
 
+import br.com.agrodigital.dao.DaoLancamento;
+import br.com.agrodigital.model.Conta;
 import br.com.agrodigital.model.Despesa;
 import br.com.agrodigital.model.Lancamento;
 import br.com.agrodigital.model.Receita;
@@ -18,41 +20,54 @@ public class ControllerLancamento {
 	}
 	
 	public boolean adicionar(Lancamento a) {
-		//LancamentoDao dao = getDaoLancamento(a);
-		//boolean resposta = dao.insert(a);
-		//return resposta;
-		return true;
+		DaoLancamento dao = new DaoLancamento();
+		boolean resposta = dao.insert(a);
+		if (resposta == false) {
+			return resposta;
+		}else {
+		
+			if (a.getTipo().equals("Receita")){
+				Receita l = (Receita) a;
+				Conta conta = ControllerConta.getInstance().listar(l.getIdConta());
+				l.credita(l.getValor(), conta);
+				Conta contaAtualizar = new Conta(conta.getId(), conta.getDescricao(), conta.getSaldo());
+				boolean respostaAtualizar = ControllerConta.getInstance().atualizar(contaAtualizar);
+				return resposta && respostaAtualizar;
+			
+			}else if (a.getTipo().equals("Despesa")) {
+				Despesa l = (Despesa) a;
+				Conta conta = ControllerConta.getInstance().listar(l.getIdConta());
+				l.debita(l.getValor(), conta);
+				Conta contaAtualizar = new Conta(conta.getId(), conta.getDescricao(), conta.getSaldo());
+				boolean respostaAtualizar = ControllerConta.getInstance().atualizar(contaAtualizar);
+				return resposta && respostaAtualizar;
+			}
+			
+			return false;
+		}
+
 	}
 	
-	public Lancamento listar(int id, String tipo) {
-		// LancamentoDao dao = getDaoLancamento(a, tipo);
-		// boolean resposta = dao.select(id);
-		// return resposta;
-		if (tipo.equals("Receita")){
-			Receita r = new Receita("teste", "01/01/2020", "Receita", 10.10);
-			return r;
-		} else if (tipo.equals("Despesa")) {
-			Despesa d = new Despesa("teste", "01/01/2020", "Despesa", 10.10, "Mão de obra");
-			return d;
-		}
-		return null;
+	public Lancamento listar(int id) {
+		DaoLancamento dao = new DaoLancamento();
+		Lancamento resposta = dao.select(id);
+		System.out.println(resposta);
+		return resposta;
 	}
 	
 	public boolean atualizar(Lancamento a) {
-		// LancamentoDao dao = getDaoLancamento(a);
-		// boolean resposta = dao.update(a);
-		// return resposta;
-		return true;
-		}
-	
-	public boolean deletar(int id, String tipo) {
-		// LancamentoDao dao = getDaoLancamento(a, tipo);
-		// boolean resposta = dao.delete(id);
-		// return resposta;
-		return true;
+		DaoLancamento dao = new DaoLancamento();
+		boolean resposta = dao.update(a);
+		return resposta;
 	}
 	
-//	public LancamentoDao getDaoLancamento(Lancamento a) {
+	public boolean deletar(int id) {
+		DaoLancamento dao = new DaoLancamento();
+		boolean resposta = dao.delete(id);
+		return resposta;
+	}
+	
+//	public DaoLancamento getDaoLancamento(Lancamento a) {
 //		if(a instanceof Receita) {
 //			//return new ReceitaDao(a);
 //		} else if(a instanceof Despesa) {
@@ -60,7 +75,7 @@ public class ControllerLancamento {
 //		}
 //	}
 	
-//	public LancamentoDao getDaoLancamento(String a) {
+//	public DaoLancamento getDaoLancamento(String a) {
 //	if((a.equals("Receita"))) {
 //		//return new ReceitaDao(a);
 //	} else if((tipo.equals("Despesa"))) {
