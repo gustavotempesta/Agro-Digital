@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
+import br.com.agrodigital.controller.ControllerConta;
 import br.com.agrodigital.model.Conta;
 
 import java.awt.event.ActionListener;
@@ -85,9 +86,17 @@ public class ViewConta extends JFrame {
 					
 					Conta contaAdicionar = new Conta(descricao, saldo);
 
-					//Chamada do Controler
+					boolean respostaAdicionar = ControllerConta.getInstance().adicionar(contaAdicionar);
 					
-					JOptionPane.showMessageDialog(null, contaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					if(respostaAdicionar == true) {
+						JOptionPane.showMessageDialog(null, contaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, contaAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+						}
+					
+					textFieldId.setText("");
+					textFieldSaldo.setText("");
+					textFieldDescricao.setText("");
 					
 					dispose();
 					break;
@@ -103,13 +112,12 @@ public class ViewConta extends JFrame {
 						return;
 					}
 					
-					// Chamada do Controller
+					Conta contaListar = ControllerConta.getInstance().listar(id);
+										
+					textFieldSaldo.setText(String.valueOf(contaListar.getSaldo()));
+					textFieldDescricao.setText(contaListar.getDescricao());
+			
 					
-					/*
-						textFieldSaldo.setText(contaListar.getSaldo);
-						textFieldDescricao.setText(contaListar.getDescricao);		
-					 
-					*/
 					break;
 					
 				case "Atualizar":
@@ -125,7 +133,6 @@ public class ViewConta extends JFrame {
 						return;
 					}
 					
-					
 					saldo = 0;
 					try {
 						saldo = Double.parseDouble(saldoString);
@@ -136,15 +143,18 @@ public class ViewConta extends JFrame {
 					
 					Conta contaAtualizar = new Conta(descricao, saldo);
 
-					// Chamada do Controller
+					boolean respostaAtualizar = ControllerConta.getInstance().atualizar(contaAtualizar); 
 					
-					/*
-					if(resposta == true) {
+					if(respostaAtualizar == true) {
 					   JOptionPane.showMessageDialog(null, contaAtualizar.toString() + "\nalterada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						JOptionPane.showMessageDialog(null, contaAtualizar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
-					 */
+					
+					textFieldId.setText("");
+					textFieldSaldo.setText("");
+					textFieldDescricao.setText("");
+					
 					dispose();
 					break;
 					
@@ -159,23 +169,23 @@ public class ViewConta extends JFrame {
 						return;
 					}
 					
-					//Chamada do Controller
+					boolean respostaDeletar = ControllerConta.getInstance().deletar(id);
 					
-					/*
-					if (resposta == true) {
-						JOptionPane.showMessageDialog(null, conta.toString() + "\npagada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					if (respostaDeletar == true) {
+						JOptionPane.showMessageDialog(null, "Conta " + id + "\napagada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						JOptionPane.showMessageDialog(null, conta.toString() + "\nOcorreu um erro ao apagar a conta !", "Erro", JOptionPane.ERROR_MESSAGE);
-					*/
+						JOptionPane.showMessageDialog(null, "Conta " + id + "\nOcorreu um erro ao apagar a conta !", "Erro", JOptionPane.ERROR_MESSAGE);	
+					}
+					textFieldId.setText("");
+					textFieldSaldo.setText("");
+					textFieldDescricao.setText("");
+					
 					dispose();
 					break;
 					
 				default:
 					break;
 				}
-				textFieldId.setText("");
-				textFieldSaldo.setText("");
-				textFieldDescricao.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);

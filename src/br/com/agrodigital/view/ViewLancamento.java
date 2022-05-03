@@ -14,8 +14,9 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
+import br.com.agrodigital.controller.ControllerLancamento;
 import br.com.agrodigital.model.Despesa;
-import br.com.agrodigital.model.Propriedade;
+import br.com.agrodigital.model.Lancamento;
 import br.com.agrodigital.model.Receita;
 
 import java.awt.event.ActionListener;
@@ -108,26 +109,41 @@ public class ViewLancamento extends JFrame {
 						return;
 					}
 					
-					if (tipo == "Despesa") {
+					if (tipo.equals("Despesa")) {
 						natureza = textFieldNatureza.getText();
 						Despesa despesaAdicionar = new Despesa(descricao, data, tipo, valor, natureza);
+						boolean respostaAdicionar = ControllerLancamento.getInstance().adicionar(despesaAdicionar);
 						
-						//Chamada do Controler
+						if(respostaAdicionar == true) {
+							JOptionPane.showMessageDialog(null, despesaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, despesaAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+							}
 						
-						JOptionPane.showMessageDialog(null, despesaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
-					}else if (tipo == "Receita") {
+					}else if (tipo.equals("Receita")) {
 						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor);
+						boolean respostaAdicionar = ControllerLancamento.getInstance().adicionar(receitaAdicionar);
 						
-						//Chamada do Controler
-						
-						JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+						if(respostaAdicionar == true) {
+							JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+							}
 					}
+					
+					textFieldId.setText("");
+					textFieldDescricao.setText("");
+					textFieldData.setText("");
+					textFieldTipo.setText("");
+					textFieldValor.setText("");
+					textFieldNatureza.setText("");
 										
 					dispose();
 					break;
 					
 				case "Listar":
 					idString = textFieldId.getText();
+					tipo = textFieldTipo.getText();
 					
 					id = 0;
 					try {
@@ -137,11 +153,24 @@ public class ViewLancamento extends JFrame {
 						return;
 					}
 					
-					// Chamada do Controller
+					Lancamento lancamentoListar = ControllerLancamento.getInstance().listar(id, tipo);
 					
-					/*
-					 
-					*/
+					if(lancamentoListar instanceof Receita) {
+						Receita receitaListar = (Receita) lancamentoListar;
+						textFieldDescricao.setText(receitaListar.getDescricao());
+						textFieldData.setText(receitaListar.getData());
+						textFieldValor.setText(String.valueOf(receitaListar.getValor()));
+						textFieldTipo.setText(receitaListar.getTipo());
+
+					} else if(lancamentoListar instanceof Despesa) {
+						Despesa despesaListar = (Despesa) lancamentoListar;
+						textFieldDescricao.setText(despesaListar.getDescricao());
+						textFieldData.setText(despesaListar.getData());
+						textFieldValor.setText(String.valueOf(despesaListar.getValor()));
+						textFieldTipo.setText(despesaListar.getTipo());
+						textFieldNatureza.setText(despesaListar.getNatureza());
+					}
+					
 					break;
 					
 				case "Atualizar":
@@ -168,30 +197,45 @@ public class ViewLancamento extends JFrame {
 						return;
 					}
 					
-					if (tipo == "Despesa") {
+					if (tipo.equals("Despesa")) {
+						System.out.println("chegou despesa");
 						natureza = textFieldNatureza.getText();
 						Despesa despesaAdicionar = new Despesa(descricao, data, tipo, valor, natureza);
 						
-						//Chamada do Controler
+						boolean respostaAtualizar = ControllerLancamento.getInstance().atualizar(despesaAdicionar); 
 						
-						/*
-						 * 
-						 */
+						if(respostaAtualizar == true) {
+							   JOptionPane.showMessageDialog(null, despesaAdicionar.toString() + "\nalterado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, despesaAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+							}
 						
-					}else if (tipo == "Receita") {
+					}else if (tipo.equals("Receita")) {
+						System.out.println("chegou receita");
 						Receita receitaAdicionar = new Receita(descricao, data, tipo, valor);
 						
-						//Chamada do Controler
-						
-						/*
-						 * 
-						 */
+						boolean respostaAtualizar = ControllerLancamento.getInstance().atualizar(receitaAdicionar); 
+
+						if(respostaAtualizar == true) {
+							   JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nalterado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(null, receitaAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+							}
 					}
+										
+					textFieldId.setText("");
+					textFieldDescricao.setText("");
+					textFieldData.setText("");
+					textFieldTipo.setText("");
+					textFieldValor.setText("");
+					textFieldNatureza.setText("");
+					
 					dispose();
 					break;
 					
 				case "Deletar":
 					idString = textFieldId.getText();
+					tipo = textFieldTipo.getText();
 					
 					id = 0;
 					try {
@@ -201,22 +245,26 @@ public class ViewLancamento extends JFrame {
 						return;
 					}
 					
-					//Chamada do Controller
+					boolean respostaDeletar = ControllerLancamento.getInstance().deletar(id, tipo);
 					
-					/*
+					if (respostaDeletar == true) {
+						JOptionPane.showMessageDialog(null, "Lançamento " + id + "\napagado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "Lançamento  " + id + "\nOcorreu um erro ao apagar o usuario !", "Erro", JOptionPane.ERROR_MESSAGE);	
+					}
+					textFieldId.setText("");
+					textFieldDescricao.setText("");
+					textFieldData.setText("");
+					textFieldTipo.setText("");
+					textFieldValor.setText("");
+					textFieldNatureza.setText("");		
 					
-					*/
 					dispose();
 					break;
 					
 				default:
 					break;
 				}
-				textFieldId.setText("");
-				textFieldDescricao.setText("");
-				textFieldData.setText("");
-				textFieldTipo.setText("");
-				textFieldNatureza.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -280,7 +328,7 @@ public class ViewLancamento extends JFrame {
 				textFieldId.setEnabled(true);
 				textFieldDescricao.setEnabled(false);
 				textFieldData.setEnabled(false);
-				textFieldTipo.setEnabled(false);
+				textFieldTipo.setEnabled(true);
 				textFieldValor.setEnabled(false);
 				textFieldNatureza.setEnabled(false);
 				btnAdicionar.setEnabled(false);
@@ -314,7 +362,7 @@ public class ViewLancamento extends JFrame {
 				textFieldId.setEnabled(true);
 				textFieldDescricao.setEnabled(false);
 				textFieldData.setEnabled(false);
-				textFieldTipo.setEnabled(false);
+				textFieldTipo.setEnabled(true);
 				textFieldValor.setEnabled(false);
 				textFieldNatureza.setEnabled(false);
 				btnAdicionar.setEnabled(false);
@@ -332,6 +380,7 @@ public class ViewLancamento extends JFrame {
 				textFieldData.setText("");
 				textFieldTipo.setText("");
 				textFieldNatureza.setText("");
+				textFieldValor.setText("");
 				textFieldId.setEnabled(false);
 				textFieldDescricao.setEnabled(false);
 				textFieldData.setEnabled(false);

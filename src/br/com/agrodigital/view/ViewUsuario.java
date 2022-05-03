@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
-import br.com.agrodigital.model.Conta;
+import br.com.agrodigital.controller.ControllerUsuario;
 import br.com.agrodigital.model.Usuario;
 
 import java.awt.event.ActionListener;
@@ -80,9 +80,17 @@ public class ViewUsuario extends JFrame {
 					
 					Usuario usuarioAdicionar = new Usuario(login, senha);
 
-					//Chamada do Controler
+					boolean respostaAdicionar = ControllerUsuario.getInstance().adicionar(usuarioAdicionar);
 					
-					JOptionPane.showMessageDialog(null, usuarioAdicionar.toString() + "\nincluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					if(respostaAdicionar == true) {
+						JOptionPane.showMessageDialog(null, usuarioAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, usuarioAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+						}
+					
+					textFieldId.setText("");
+					textFieldLogin.setText("");
+					textFieldSenha.setText("");
 					
 					dispose();
 					break;
@@ -98,11 +106,11 @@ public class ViewUsuario extends JFrame {
 						return;
 					}
 					
-					// Chamada do Controller
+					Usuario usuarioListar = ControllerUsuario.getInstance().listar(id);
 					
-					/*	
-					 
-					*/
+					textFieldLogin.setText(String.valueOf(usuarioListar.getLogin()));
+					textFieldSenha.setText(usuarioListar.getSenha());
+
 					break;
 					
 				case "Atualizar":
@@ -120,11 +128,18 @@ public class ViewUsuario extends JFrame {
 					
 					Usuario usuarioAtualizar = new Usuario(login, senha);
 
-					// Chamada do Controller
+					boolean respostaAtualizar = ControllerUsuario.getInstance().atualizar(usuarioAtualizar); 
 					
-					/*
-
-					 */
+					if(respostaAtualizar == true) {
+					   JOptionPane.showMessageDialog(null, usuarioAtualizar.toString() + "\nalterado com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, usuarioAtualizar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					textFieldId.setText("");
+					textFieldLogin.setText("");
+					textFieldSenha.setText("");
+					
 					dispose();
 					break;
 					
@@ -139,20 +154,23 @@ public class ViewUsuario extends JFrame {
 						return;
 					}
 					
-					//Chamada do Controller
+					boolean respostaDeletar = ControllerUsuario.getInstance().deletar(id);
 					
-					/*
+					if (respostaDeletar == true) {
+						JOptionPane.showMessageDialog(null, "Usuario " + id + "\napagada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "Usuario " + id + "\nOcorreu um erro ao apagar o usuario !", "Erro", JOptionPane.ERROR_MESSAGE);	
+					}
+					textFieldId.setText("");
+					textFieldLogin.setText("");
+					textFieldSenha.setText("");
 					
-					*/
 					dispose();
 					break;
 					
 				default:
 					break;
 				}
-				textFieldId.setText("");
-				textFieldLogin.setText("");
-				textFieldSenha.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);

@@ -14,8 +14,8 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.border.EtchedBorder;
 
+import br.com.agrodigital.controller.ControllerPropriedade;
 import br.com.agrodigital.model.Propriedade;
-import br.com.agrodigital.model.Usuario;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -93,9 +93,19 @@ public class ViewPropriedade extends JFrame {
 					
 					Propriedade propriedadeAdicionar = new Propriedade(inscEst, nome, municipio, contato);
 
-					//Chamada do Controler
+					boolean respostaAdicionar = ControllerPropriedade.getInstance().adicionar(propriedadeAdicionar);
 					
-					JOptionPane.showMessageDialog(null, propriedadeAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);				
+					if(respostaAdicionar == true) {
+						JOptionPane.showMessageDialog(null, propriedadeAdicionar.toString() + "\nincluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, propriedadeAdicionar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+						}
+					
+					textFieldId.setText("");
+					textFieldInscEst.setText("");
+					textFieldNome.setText("");
+					textFieldMunicipio.setText("");
+					textFieldContato.setText("");
 					
 					dispose();
 					break;
@@ -111,11 +121,13 @@ public class ViewPropriedade extends JFrame {
 						return;
 					}
 					
-					// Chamada do Controller
+					Propriedade propriedadeListar = ControllerPropriedade.getInstance().listar(id);
 					
-					/*
-					 
-					*/
+					textFieldInscEst.setText(String.valueOf(propriedadeListar.getInscEst()));
+					textFieldNome.setText(propriedadeListar.getNome());
+					textFieldMunicipio.setText(String.valueOf(propriedadeListar.getMunicipio()));
+					textFieldContato.setText(propriedadeListar.getContato());
+
 					break;
 					
 				case "Atualizar":
@@ -135,11 +147,20 @@ public class ViewPropriedade extends JFrame {
 					
 					Propriedade propriedadeAtualizar = new Propriedade(inscEst, nome, municipio, contato);
 
-					// Chamada do Controller
+					boolean respostaAtualizar = ControllerPropriedade.getInstance().atualizar(propriedadeAtualizar); 
+
+					if(respostaAtualizar == true) {
+						   JOptionPane.showMessageDialog(null, propriedadeAtualizar.toString() + "\nalterada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, propriedadeAtualizar.toString() + "\nOcorreu um erro !", "Erro", JOptionPane.ERROR_MESSAGE);
+						}
 					
-					/*
-					 
-					 */
+					textFieldId.setText("");
+					textFieldInscEst.setText("");
+					textFieldNome.setText("");
+					textFieldMunicipio.setText("");
+					textFieldContato.setText("");
+					
 					dispose();
 					break;
 					
@@ -154,22 +175,26 @@ public class ViewPropriedade extends JFrame {
 						return;
 					}
 					
-					//Chamada do Controller
+					boolean respostaDeletar = ControllerPropriedade.getInstance().deletar(id);
 					
-					/*
+					if (respostaDeletar == true) {
+						JOptionPane.showMessageDialog(null, "Propriedade " + id + "\napagada com sucesso !", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "Propriedade " + id + "\nOcorreu um erro ao apagar o usuario !", "Erro", JOptionPane.ERROR_MESSAGE);	
+					}
 					
-					*/
+					textFieldId.setText("");
+					textFieldInscEst.setText("");
+					textFieldNome.setText("");
+					textFieldMunicipio.setText("");
+					textFieldContato.setText("");
+					
 					dispose();
 					break;
 					
 				default:
 					break;
 				}
-				textFieldId.setText("");
-				textFieldInscEst.setText("");
-				textFieldNome.setText("");
-				textFieldMunicipio.setText("");
-				textFieldContato.setText("");
 			}
 		});
 		btnConfirmar.setHorizontalTextPosition(SwingConstants.RIGHT);
